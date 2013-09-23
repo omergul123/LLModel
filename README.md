@@ -107,7 +107,7 @@ LLModel simply gets the values from the JSON and creates an Address object (Addr
 
 Feeds are a little bit different story. Since **feeds** property is defined as NSMutableArray (or it can be NSArray) LLModel can't know which type of objects it must contain.
 
-So in the mapping, we provide a dictionary with the keys: "key" and "type". LLModel will than create the Feed objects and add them to NSarray and finally will assign to the property.
+Therefore, in the mapping, we provide a dictionary with the keys: **key** and **type**. LLModel will then create the Feed objects and add them to NSarray and finally will assign to the property.
 
 ## Reverse Mapping
 
@@ -116,7 +116,8 @@ Well, if you wonder, reverse mapping is also recursive. It means, if you call th
 
 ## Error handling
 
-LLModel will add NSerror objects to self.mappingErrors if there are any errors while parsing the JSON. You can log the errors with the helper method [self logAllMappingErrors].
+LLModel will add NSerror objects to self.mappingErrors if there are any errors while parsing the JSON.
+You can log the errors with the helper method **[self logAllMappingErrors]**.
 
 ## Best Practice
 
@@ -128,6 +129,8 @@ One of the main reasons for this is because many of the dates you receive from J
 Please download the example project to see how the enitre system works.
 
 ## Contact
+
+Ömer Faruk Gül
 
 [My LinkedIn Account][2]
 
