@@ -17,7 +17,8 @@ Say you have the following three models:
 
 And the JSON data we will be receiving is going to be User which contains one Address and many Feeds.
 
-Here I will show only the User model (download the example to see other models), you have to inherit from LLModel.
+Here I will show only the User model (download the example to see other models).
+First of all, you have to subclass LLModel.
 
 ````
 @interface User : LLModel
@@ -107,12 +108,14 @@ LLModel simply gets the values from the JSON and creates an Address object (Addr
 
 Feeds are a little bit different story. Since **feeds** property is defined as NSMutableArray (or it can be NSArray) LLModel can't know which type of objects it must contain.
 
-Therefore, in the mapping, we provide a dictionary with the keys: **key** and **type**. LLModel will then create the Feed objects and add them to NSarray and finally will assign to the property.
+Therefore, in the mapping, you have to provide a dictionary with the keys: **key** and **type**. LLModel will then create the Feed objects and add them to NSarray and finally will assign to the property.
 
 ## Reverse Mapping
 
-If you want to receive the object values in the form of JSON data, you can simply call the **(NSDictionary *)reverseMapping** method.
-Well, if you wonder, reverse mapping is also recursive. It means, if you call this on a User instance, you will get Address and Feeds inside the JSON object.
+If you want to receive the object values in the form of JSON data, you can simply call the
+**(NSDictionary *)reverseMapping** method.
+Well, if you wonder, reverse mapping is also recursive.
+In other words, if you call this on a User instance, you will also get Address and Feeds JSON inside the main JSON object.
 
 ## Error handling
 
@@ -121,8 +124,8 @@ You can log the errors with the helper method **[self logAllMappingErrors]**.
 
 ## Best Practice
 
-I reccomend creating a BaseModel which will be a subclass of LLModel. All of your models then should subclass BaseModel instead of LLModel directly.
-One of the main reasons for this is because many of the dates you receive from JSON will have the same date format, so in BaseModel you can define the date formatter only once.
+I recommend creating a BaseModel which will be a subclass of LLModel. All of your models then should subclass BaseModel instead of LLModel directly.
+One of the main reasons for this approach is because many of the dates you receive from JSON will have the same date format, so in BaseModel you can define the date formatter only once.
 
 ## Example Project
 
