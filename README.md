@@ -1,12 +1,12 @@
 # LLModel: Object Property Mapper for JSON
 
-LLModel is a library for mapping the JSON data to object properties.
+LLModel is a library for mapping the JSON data to object properties. It works perfectly well alongside with [AFNetwoking][1].
 
 LLModel:
 * supports recursive model initializations (see examples below)
 * supports primitive values such as bool, char, integer, float and others
 * handles NULL values gracefully
-* handles Date and URL values properly
+* handles Date and URL values without any problem
 
 ## Example usage
 
@@ -74,16 +74,45 @@ There is no need to worry about the types, LLModel will check the property types
 @end
 
 ````
+And finally, after you make a call to an API, initialize the LLModel instance (User) with the received JSON. That's it!
+
+````
+    // The JSON from the folowing URL is generated specially for this project.
+    NSURL *url = [NSURL URLWithString:@"http://www.dailypul.se/api/v1/test/llmodel"];
+    NSURLRequest *request = [NSURLRequest requestWithURL:url];
+    AFJSONRequestOperation *operation = [AFJSONRequestOperation JSONRequestOperationWithRequest:request success:^(NSURLRequest *request, NSHTTPURLResponse *response, id JSON) {
+        
+        // Simply init the user with JSON, that's all!
+        self.user = [[User alloc] initWithJSON:JSON];
+        
+        Feed *feed = [self.user.feeds objectAtIndex:0];
+        
+        // Log the model values
+        NSLog(@"User description: %@", self.user.description);
+        NSLog(@"User Address description: %@", self.user.address.description);
+        NSLog(@"User Feed[0] description: %@", feed.description);
+        
+        NSLog(@"User dictionary: %@", [self.user reverseMapping]);
+        NSLog(@"Feed dictionary: %@", [feed reverseMapping]);
+        
+    } failure:nil];
+    [operation start];
+````
 
 ## Recursive Mapping
 
 In the above example the most interesting part is the mapping of the "address" and "feeds" properties.
 
-LLModel simply gets the values from JSON value and creates an Address object (Address model should also be a subclass of LLModel) and assigns to property.
+LLModel simply gets the values from the JSON and creates an Address object (Address model should also be a subclass of LLModel) and assigns to property.
 
-Feeds is a little bit different story. Since **feeds** property is defined as NSMutableArray (or MSArray) LLModel can't know which type of objects it must contain.
+Feeds are a little bit different story. Since **feeds** property is defined as NSMutableArray (or it can be NSArray) LLModel can't know which type of objects it must contain.
 
 So in the mapping, we provide a dictionary with the keys: "key" and "type". LLModel will than create the Feed objects and add them to NSarray and finally will assign to the property.
+
+## Reverse Mapping
+
+If you want to receive the object values in the form of JSON data, you can simply call the **(NSDictionary *)reverseMapping** method.
+Well, if you wonder, reverse mapping is also recursive. It means, if you call this on a User instance, you will get Address and Feeds inside the JSON object.
 
 ## Error handling
 
@@ -97,5 +126,12 @@ One of the main reasons for this is because many of the dates you receive from J
 ## Example Project
 
 Please download the example project to see how the enitre system works.
+
+## Contact
+
+[My LinkedIn Account][2]
+
+ [1]: https://github.com/AFNetworking/AFNetworking
+ [2]: http://www.linkedin.com/profile/view?id=44437676
 
 
