@@ -1,6 +1,6 @@
 //
 //  LLModel.m
-//  LouvreConnect
+//  LouvreModel
 //
 //  Created by Ömer Faruk Gül on 9/17/13.
 //  Copyright (c) 2013 Louvre Digital. All rights reserved.
@@ -8,6 +8,10 @@
 
 #import "LLModel.h"
 #import "PropertyUtil.h"
+
+@interface LLModel ()
+@property (strong, nonatomic) NSDictionary *reverseMappedJSON;
+@end
 
 @implementation LLModel
 
@@ -43,8 +47,97 @@
     }
 }
 
+- (NSDictionary *)reverseMapping
+{
+    NSMutableDictionary *JSON = [NSMutableDictionary dictionary];
+    
+    NSString *mappedJSONKey;
+    NSString *mappedJSONType;
+    
+    NSDictionary *properties = [PropertyUtil classPropsFor:self.class];
+    
+    for (NSString* propertyName in self.mapping) {
+        id mappingValue = [self.mapping objectForKey:propertyName];
+        
+        if([mappingValue isKindOfClass:NSDictionary.class]) {
+            mappedJSONKey = [mappingValue valueForKey:@"key"];
+            mappedJSONType = [mappingValue valueForKey:@"type"];
+        } else {
+            mappedJSONKey = mappingValue;
+        }
+        
+        NSString *propertyType = [properties valueForKey:propertyName];
+
+        id value = [self valueForKey:propertyName];
+        
+        // NSDate
+        if([propertyType isEqualToString:@"NSDate"]) {
+            
+            if(!self.mappingDateFormatter) {
+                continue;
+            }
+            
+            value = [self.mappingDateFormatter stringFromDate:value];
+        }
+        // NSURL
+        else if([propertyType isEqualToString:@"NSURL"]) {
+            NSURL *url = value;
+            value = [url absoluteString];
+        }
+        // NSArray, NSMutableArray
+        else if([propertyType isEqualToString:@"NSArray"] ||
+                [propertyType isEqualToString:@"NSMutableArray"]) {
+            
+            NSMutableArray *arr = [NSMutableArray array];
+            for(id LLObject in value) {
+                SEL selector = NSSelectorFromString(@"reverseMapping");
+                NSInvocation *invocation = [NSInvocation invocationWithMethodSignature:
+                                                [[LLModel class] instanceMethodSignatureForSelector:selector]];
+                [invocation setSelector:selector];
+                [invocation setTarget:LLObject];
+                [invocation invoke];
+                NSDictionary *returnValue;
+                [invocation getReturnValue:&returnValue];
+                
+                [arr addObject:returnValue];
+            }
+            
+            value = arr;
+            
+        }
+        // Other LLModel or an unidentified value
+        else {
+            BOOL isLLModel = [NSClassFromString(propertyType) isSubclassOfClass:[LLModel class]];
+            if(isLLModel) {
+                SEL selector = NSSelectorFromString(@"reverseMapping");
+                NSInvocation *invocation = [NSInvocation invocationWithMethodSignature:
+                                            [[LLModel class] instanceMethodSignatureForSelector:selector]];
+                [invocation setSelector:selector];
+                [invocation setTarget:value];
+                [invocation invoke];
+                NSDictionary *returnValue;
+                [invocation getReturnValue:&returnValue];
+                
+                value = returnValue;
+
+            }
+            else {
+                // do nothing
+            }
+        }
+
+        
+        [JSON setValue:value forKey:propertyName];
+    }
+    
+    self.reverseMappedJSON = JSON;
+    
+    return self.reverseMappedJSON;
+}
+
 - (void) setValuesWithMapping:(NSDictionary *)mapping andJSON:(id)JSON
 {
+    self.mapping = mapping;
     self.mappingErrors = [NSMutableArray array];
     
     NSDictionary *properties = [PropertyUtil classPropsFor:self.class];

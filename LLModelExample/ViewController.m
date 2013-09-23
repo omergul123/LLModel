@@ -78,7 +78,15 @@
         self.button.enabled = YES;
         self.label.text = @"Models initialized.";
         
-    } failure:nil];
+        NSLog(@"User dictionary: %@", [self.user reverseMapping]);
+        NSLog(@"Feed dictionary: %@", [feed reverseMapping]);
+       
+        
+    } failure:^(NSURLRequest *request, NSHTTPURLResponse *response, NSError *error, id JSON) {
+        NSLog(@"A problem has occured with error : %@", error.localizedDescription);
+        self.button.enabled = YES;
+        self.label.text = @"Error has occured.";
+    }];
     [operation start];
 }
 

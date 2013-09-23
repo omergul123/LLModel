@@ -1,6 +1,6 @@
 //
 //  PropertyUtil.m
-//  LouvreConnect
+//  LouvreModel
 //
 //  Created by Ömer Faruk Gül on 9/18/13.
 //  Copyright (c) 2013 Louvre Digital. All rights reserved.
