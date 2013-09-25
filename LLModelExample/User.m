@@ -37,18 +37,18 @@
     return self;
 }
 
-- (NSString *)description
-{
-    NSString *str = [NSString stringWithFormat:@"%@ - %@ - %@ - %@ - %d - %d - %@",
-                     self.userId,
-                     self.firstName,
-                     self.lastName,
-                     self.username,
-                     self.publicProfile,
-                     self.loginCount,
-                     [self.mappingDateFormatter stringFromDate:self.createdAt]];
-    
-    return str;
-}
+//- (NSString *)description
+//{
+//    NSString *str = [NSString stringWithFormat:@"%@ - %@ - %@ - %@ - %d - %d - %@",
+//                     self.userId,
+//                     self.firstName,
+//                     self.lastName,
+//                     self.username,
+//                     self.publicProfile,
+//                     self.loginCount,
+//                     [self.mappingDateFormatter stringFromDate:self.createdAt]];
+//    
+//    return str;
+//}
 
 @end

@@ -16,9 +16,7 @@
 
 - (id) initWithJSON:(id)JSON;
 - (void) setValuesWithMapping:(NSDictionary *)mapping andJSON:(id)JSON;
-
-- (void)logAllMappingErrors;
-
-- (NSDictionary *)reverseMapping;
+- (void) logAllMappingErrors;
+- (NSDictionary *) reverseMapping;
 
 @end

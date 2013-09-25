@@ -47,6 +47,20 @@
     }
 }
 
+- (NSString *)description
+{
+    NSString *str = @"";
+    
+    NSDictionary *properties = [PropertyUtil classPropsFor:self.class];
+    for(NSString *propertyName in properties) {
+         id value = [self valueForKey:propertyName];
+        
+        str = [str stringByAppendingString:[NSString stringWithFormat:@"%@: %@\n", propertyName, value]];
+    }
+    
+    return str;
+}
+
 - (NSDictionary *)reverseMapping
 {
     NSMutableDictionary *JSON = [NSMutableDictionary dictionary];
@@ -135,7 +149,7 @@
     return self.reverseMappedJSON;
 }
 
-- (void) setValuesWithMapping:(NSDictionary *)mapping andJSON:(id)JSON
+- (void)setValuesWithMapping:(NSDictionary *)mapping andJSON:(id)JSON
 {
     self.mapping = mapping;
     self.mappingErrors = [NSMutableArray array];
@@ -259,7 +273,6 @@
                 [self.mappingErrors addObject:error];
             }
         }
-        
         
     }
 
