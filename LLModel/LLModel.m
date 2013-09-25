@@ -151,10 +151,14 @@
 
 - (void)setValuesWithMapping:(NSDictionary *)mapping andJSON:(id)JSON
 {
+    NSLog(@"Beginning setting!");
     self.mapping = mapping;
     self.mappingErrors = [NSMutableArray array];
     
+    NSLog(@"Before properties!");
     NSDictionary *properties = [PropertyUtil classPropsFor:self.class];
+    
+    NSLog(@"After properties!");
     
     for(NSString *propertyName in properties) {
         
@@ -185,7 +189,7 @@
         // Get JSON value for the mapped key
         id value = [JSON valueForKeyPath:mappedJSONKey];
         
-        //NSLog(@"Looking for : %@ -- %@ -- %@", propertyType, mappedJSONKey, value);
+        NSLog(@"Looking for : %@ -- %@ -- %@", propertyType, mappedJSONKey, value);
         
         // char
         if([propertyType isEqualToString:@"c"]) {
