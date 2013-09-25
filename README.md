@@ -8,6 +8,10 @@ LLModel:
 * handles NULL values gracefully
 * handles Date and URL values without any problem
 
+### Version 1.1
+* added default  **(NSString *)description** method implementation.
+* iOS7 compatibility
+
 ## Example usage
 
 Say you have the following three models:
@@ -122,6 +126,11 @@ In other words, if you call this on a User instance, you will also get Address a
 LLModel will add NSerror objects to self.mappingErrors if there are any errors while parsing the JSON.
 You can log the errors with the helper method **[self logAllMappingErrors]**.
 
+## Description (Print all property values)
+
+LLModel has a default implementation for **(NSString *)description**.
+This method prints all the properties with their values, so you can easily debug your application.
+
 ## Best Practice
 
 I recommend creating a BaseModel which will be a subclass of LLModel. All of your models then should subclass BaseModel instead of LLModel directly.
@@ -129,7 +138,7 @@ One of the main reasons for this approach is because many of the dates you recei
 
 ## Example Project
 
-Please download the example project to see how the enitre system works.
+Please download the example project to see how the entire system works.
 
 ## Contact
 
