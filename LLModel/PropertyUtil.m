@@ -11,22 +11,21 @@
 
 @implementation PropertyUtil
 
-static const char * property_getTypeString( objc_property_t property )
+static BOOL property_getTypeString( objc_property_t property, char *buffer )
 {
 	const char * attrs = property_getAttributes( property );
 	if ( attrs == NULL )
-		return ( NULL );
-    
-	static char buffer[256];
+		return NO;
+
 	const char * e = strchr( attrs, ',' );
 	if ( e == NULL )
-		return ( NULL );
-    
+		return NO;
+
 	int len = (int)(e - attrs);
 	memcpy( buffer, attrs, len );
 	buffer[len] = '\0';
-    
-	return ( buffer );
+
+    return YES;
 }
 
 
@@ -46,7 +45,10 @@ static const char * property_getTypeString( objc_property_t property )
         const char *propName = property_getName(property);
         if(propName) {
             //const char *propType = getPropertyType(property);
-            const char *propType = property_getTypeString(property);
+            char propType[256];
+            if (!property_getTypeString(property, propType)) {
+                continue;
+            }
             NSString *propertyName = [NSString stringWithUTF8String:propName];
             NSString *propertyType = [NSString stringWithUTF8String:propType];
             
