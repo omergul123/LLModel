@@ -184,7 +184,10 @@
         
         // Get JSON value for the mapped key
         id value = [JSON valueForKeyPath:mappedJSONKey];
-        
+        if (!value) {
+            continue;
+        }
+
         //NSLog(@"Looking for : %@ -- %@ -- %@", propertyType, mappedJSONKey, value);
         
         // char
