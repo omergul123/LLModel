@@ -1,6 +1,6 @@
 Pod::Spec.new do |s|
   s.name         = "LLModel"
-  s.version      = "1.1.0"
+  s.version      = "1.2.0"
   s.summary      = "LLModel is an Object Property Mapper from JSON values."
   s.description  = <<-DESC
                    LLModel is a library for mapping the JSON data to object properties. It works perfectly well alongside with AFNetwoking.
