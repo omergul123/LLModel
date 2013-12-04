@@ -16,7 +16,7 @@ handles Date and URL values without any problem
   s.license      = { :type => 'MIT', :file => 'LICENSE' }
   s.author       = { "Ömer Faruk Gül" => "omer.gul@louvredigital.com" }
   s.platform     = :ios, '5.0'
-  s.source       = { :git => "https://github.com/omergul123/LLModel.git", :tag => "v1.1.0" }
+  s.source       = { :git => "https://github.com/omergul123/LLModel.git", :tag => "v1.2.0" }
   s.source_files  = 'LLModel/*.{h,m}'
   s.requires_arc = true
   s.frameworks = 'Foundation'
