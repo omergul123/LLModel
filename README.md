@@ -126,6 +126,13 @@ In other words, if you call this on a User instance, you will also get Address a
 LLModel will add NSerror objects to self.mappingErrors if there are any errors while parsing the JSON.
 You can log the errors with the helper method **[self logAllMappingErrors]**.
 
+## Batch initialization
+
+If you want to initalize array of JSON values in just one function call, instead of a for loop, here is the solution:
+````
+NSArray *cities = [City batch:[JSON valueForKey:@"data"]];
+````
+
 ## Description (Print all property values)
 
 LLModel has a default implementation for **(NSString *)description**.
