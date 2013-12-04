@@ -32,6 +32,14 @@
         return NO;
 }
 
+- (BOOL)isObjNull:(id)obj
+{
+    if(nil == obj || NSNull.null == obj)
+        return YES;
+    else
+        return NO;
+}
+
 - (NSError *)createError:(NSString *)errorStr
 {
     NSMutableDictionary* details = [NSMutableDictionary dictionary];
@@ -53,12 +61,26 @@
     
     NSDictionary *properties = [PropertyUtil classPropsFor:self.class];
     for(NSString *propertyName in properties) {
-         id value = [self valueForKey:propertyName];
+        id value = [self valueForKey:propertyName];
         
         str = [str stringByAppendingString:[NSString stringWithFormat:@"%@: %@\n", propertyName, value]];
     }
     
     return str;
+}
+
++ (NSArray *)batch:(id)JSON
+{
+    NSString *className = NSStringFromClass([self class]);
+    
+    NSMutableArray *batch = [NSMutableArray array];
+    
+    for(id objectJSON in JSON) {
+        LLModel *val = [[NSClassFromString(className) alloc] initWithJSON:objectJSON];
+        [batch addObject:val];
+    }
+    
+    return batch;
 }
 
 - (NSDictionary *)reverseMapping
@@ -81,7 +103,7 @@
         }
         
         NSString *propertyType = [properties valueForKey:propertyName];
-
+        
         id value = [self valueForKey:propertyName];
         
         // NSDate
@@ -106,7 +128,7 @@
             for(id LLObject in value) {
                 SEL selector = NSSelectorFromString(@"reverseMapping");
                 NSInvocation *invocation = [NSInvocation invocationWithMethodSignature:
-                                                [[LLModel class] instanceMethodSignatureForSelector:selector]];
+                                            [[LLModel class] instanceMethodSignatureForSelector:selector]];
                 [invocation setSelector:selector];
                 [invocation setTarget:LLObject];
                 [invocation invoke];
@@ -133,13 +155,13 @@
                 [invocation getReturnValue:&returnValue];
                 
                 value = returnValue;
-
+                
             }
             else {
                 // do nothing
             }
         }
-
+        
         
         [JSON setValue:value forKey:propertyName];
     }
@@ -184,10 +206,10 @@
         
         // Get JSON value for the mapped key
         id value = [JSON valueForKeyPath:mappedJSONKey];
-        if (!value) {
+        if([self isObjNull:value]) {
             continue;
         }
-
+        
         //NSLog(@"Looking for : %@ -- %@ -- %@", propertyType, mappedJSONKey, value);
         
         // char
@@ -278,7 +300,7 @@
         }
         
     }
-
+    
 }
 
 @end
