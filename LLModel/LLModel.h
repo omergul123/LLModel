@@ -10,6 +10,8 @@
 
 @interface LLModel : NSObject
 
++ (NSArray *)batch:(id)JSON;
+
 @property (strong, nonatomic) NSDictionary *mapping;
 @property (strong, nonatomic) NSDateFormatter *mappingDateFormatter;
 @property (strong, nonatomic) NSMutableArray *mappingErrors;
