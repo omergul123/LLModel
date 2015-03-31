@@ -1,4 +1,4 @@
-# LLModel: Object Property Mapper for JSON
+# LLModel: Object Property Mapper for JSON (Deprecated, no longer maintained)
 
 LLModel is a library for mapping the JSON data to object properties. It works perfectly well alongside with [AFNetwoking][1].
 
