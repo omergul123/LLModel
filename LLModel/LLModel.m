@@ -211,9 +211,14 @@
         }
         
         //NSLog(@"Looking for : %@ -- %@ -- %@", propertyType, mappedJSONKey, value);
-        
+
+        // BOOL
+        if([propertyType isEqualToString:@"B"]) {
+            BOOL val = [value boolValue];
+            [self setValue:@(val) forKey:propertyName];
+        }
         // char
-        if([propertyType isEqualToString:@"c"]) {
+        else if([propertyType isEqualToString:@"c"]) {
             char val = [value charValue];
             [self setValue:@(val) forKey:propertyName];
         }
